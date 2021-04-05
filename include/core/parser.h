@@ -11,14 +11,12 @@ using namespace std;
 
 class Parser {
 
+    int images_total = 0;
+    const int kImageDimension = 28;
+
 public:
 
-    vector<vector<string>> getTrainingData(string fileLocation);
-
-    size_t getTrainingValue(string file);
-
-    vector<char> getValuesOfTiles(string);
-
+    static vector<string> getTrainingImages(string fileLocation, int imageLength);
 
 };
 #endif //NAIVE_BAYES_PARSER_H

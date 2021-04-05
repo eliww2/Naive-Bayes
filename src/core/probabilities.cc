@@ -2,8 +2,6 @@
 
 namespace naivebayes {
 
-
-
     float Probabilities::calculatePrior(int num_of_class, int total_images) const {
         float prior_top = kLaplaceSmoothing + (float)num_of_class;
         float prior_bottom = (10 * kLaplaceSmoothing) + (float)total_images;
@@ -18,5 +16,5 @@ namespace naivebayes {
         return likelihood;
     }
 
-
+    
 }  // namespace naivebayes

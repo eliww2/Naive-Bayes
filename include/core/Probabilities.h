@@ -10,6 +10,7 @@ class Probabilities {
 
 public:
 
+
     /** This function will return the probability that an image belongs to any class c.
      *
      * @param num_of_class - Is the # of images that belong to class c in the training set.
@@ -28,15 +29,8 @@ public:
      */
     float calculateLikelihoodPixel(int num_pixels, int num_of_class) const;
 
-    float calculateProbabilityOfClass();
-
 };
 
 
 }  // namespace naivebayes
 
-/*
-Make sure to add any files that you create to CMakeLists.txt.
-
-TODO Delete this comment before submitting your code.
-*/

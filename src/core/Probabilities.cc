@@ -1,4 +1,4 @@
-#include <core/probabilities.h>
+#include <core/Probabilities.h>
 
 namespace naivebayes {
 
@@ -16,5 +16,4 @@ namespace naivebayes {
         return likelihood;
     }
 
-    
 }  // namespace naivebayes

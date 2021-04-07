@@ -4,15 +4,21 @@
 
 #include <fstream>
 #include <core/parser.h>
+#include <core/Probabilities.h>
 #include "core/NaiveModel.h"
+
+namespace naivebayes {
 
 NaiveModel::NaiveModel() {};
 
-NaiveModel::NaiveModel(string fileLocation, int image_length) {
-    //1
-    Parser *parser = new Parser();
-    vector<string> images = parser->getTrainingImages(fileLocation, image_length);
-    //2, 3, 4
+NaiveModel::NaiveModel(string fileLocation, int image_height) {
+
+    auto *parser = new Parser();
+    vector<string> images = parser->getTrainingImages(fileLocation, image_height);
+    total_images = images.size();
+    size_t image_size = images.at(0).length();
+
+
     for (string current_image : images) {
 
         // Image representation
@@ -20,13 +26,21 @@ NaiveModel::NaiveModel(string fileLocation, int image_length) {
 
         //2
         //Determining if the this kind of image has been interpreted before and incrementing.
-        if (classes.empty()) {
+        if (classes->empty()) {
             auto *new_class = new class_();
             new_class->class_name = current_class_name;
-            classes.push_back(*new_class);
+            auto *shaded = new vector<int>(image_size - 1, 0);
+            auto *unshaded = new vector<int>(image_size - 1, 0);
+            auto *shaded_like = new vector<float>(image_size - 1, 0);
+            auto *unshaded_like = new vector<float>(image_size - 1, 0);
+            new_class->pixels_unshaded = *unshaded;
+            new_class->pixels_shaded = *shaded;
+            new_class->pixel_unshaded_likelihood = *unshaded_like;
+            new_class->pixel_shaded_likelihood = *shaded_like;
+            classes->push_back(*new_class);
         }
         bool class_DNE = true;
-        for (auto i = classes.begin(); i < classes.end(); i++) {
+        for (auto i = classes->begin(); i < classes->end(); i++) {
             if (i->class_name == current_class_name) {
                 class_DNE = false;
                 i->training_occurrences++;
@@ -37,38 +51,55 @@ NaiveModel::NaiveModel(string fileLocation, int image_length) {
             auto *new_class = new class_();
             new_class->class_name = current_class_name;
             new_class->training_occurrences++;
-            classes.push_back(*new_class);
+            auto *shaded = new vector<int>(image_size - 1, 0);
+            auto *unshaded = new vector<int>(image_size - 1, 0);
+            auto *shaded_like = new vector<float>(image_size - 1, 0);
+            auto *unshaded_like = new vector<float>(image_size - 1, 0);
+            new_class->pixels_unshaded = *unshaded;
+            new_class->pixels_shaded = *shaded;
+            new_class->pixel_unshaded_likelihood = *unshaded_like;
+            new_class->pixel_shaded_likelihood = *shaded_like;
+            classes->push_back(*new_class);
         }
 
-        //3
         class_ *current_class;
-        for (int i = 0; i < classes.size(); i++) {
-            if (current_class_name == classes[i].class_name) {
-                current_class = &classes[i];
-            }
-        }
-        for (int i = 1; i < current_image.size(); i++) {
-            if (&current_image.at(i) == " ") {
-                current_class->pixels_unshaded[i]++;
-            } else {
-                current_class->pixels_shaded[i]++;
+        for (size_t i = 0; i < classes->size(); i++) {
+            if (current_class_name == classes->at(i).class_name) {
+                current_class = &classes->at(i);
             }
         }
 
-
-
+        CalculateShading(current_image, *current_class);
 
     }
 
-
-
-    /*
-     * 1. go through training data and divide into images
-     * 2a. For any image that does not have a class, create a new one and increment occurrences.
-     * 2b. If an image does have a class increment occurrences.
-     * 3. Go through each pixel of the image and find if it is shaded or not,
-     * incrementing counts accordingly
-     * 4.Do this for all images
-     *
-     */
 }
+
+void NaiveModel::CalculateProbabilities() {
+
+    Probabilities *calculator = new Probabilities();
+    for (class_ &current_class : *classes) {
+        current_class.prior = calculator->calculatePrior(current_class.training_occurrences, total_images);
+        for (size_t i = 0; i < current_class.pixels_shaded.size(); i++) {
+            current_class.pixel_shaded_likelihood.at(i) = calculator->calculateLikelihoodPixel(current_class.pixels_shaded.at(i), current_class.training_occurrences);
+            current_class.pixel_unshaded_likelihood.at(i) =
+                    calculator->
+                            calculateLikelihoodPixel(current_class.pixels_unshaded.at(i),
+                                                     current_class.training_occurrences
+                    );
+        }
+    }
+}
+
+void NaiveModel::CalculateShading(string &image, class_ &character) {
+    for (size_t i = 1; i < character.pixels_unshaded.size(); i++) {
+
+        if (image.at(i) == *" ") {
+            character.pixels_unshaded.at(i - 1)++;
+        } else {
+            character.pixels_shaded.at(i - 1)++;
+        }
+    }
+}
+
+} // namespace naivebayes

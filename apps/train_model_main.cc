@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <core/probabilities.h>
+#include <core/Probabilities.h>
 #include <core/parser.h>
 
 // TODO: You may want to change main's signature to take in argc and argv

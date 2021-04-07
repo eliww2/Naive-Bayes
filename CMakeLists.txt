@@ -49,8 +49,7 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/probabilities.cc src/core/NaiveModel.cpp src/core/parser.cpp
-        )
+list(APPEND CORE_SOURCE_FILES src/core/Probabilities.cc src/core/parser.cpp src/core/NaiveModel.cpp)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
                             src/visualizer/naive_bayes_app.cc

@@ -1,13 +1,17 @@
 #include <catch2/catch.hpp>
 
-#include <core/probabilities.h>
+#include <core/Probabilities.h>
 #include <core/parser.h>
+#include <core/NaiveModel.h>
+#include <iostream>
 
+namespace naivebayes {
 TEST_CASE("Check that 126 is the best class") {
-
-  REQUIRE(true);
+    NaiveModel model("C:\\Users\\eliww\\Downloads\\Cinder\\my_projects\\naive-bayes\\data\\trainingimagesandlabels.txt",29);
+    model.CalculateProbabilities();
+    cout << "hello";
 }
-
+}
 /*
 TODO: Rename this test file. You'll also need to modify CMakeLists.txt.
 

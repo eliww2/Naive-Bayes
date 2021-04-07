@@ -23,6 +23,8 @@ public:
      */
     static vector<string> getTrainingImages(string fileLocation, int imageLength);
 
+    vector<string> Parser::getOverload(vector<string> image_lines, int imageDimension);
+
 };
 
 } // namespace naivebayes

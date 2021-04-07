@@ -13,6 +13,9 @@ namespace naivebayes {
 
     class NaiveModel {
 
+    public:
+
+        //public for testing
         struct class_ {
             char class_name;
             int training_occurrences;
@@ -23,19 +26,24 @@ namespace naivebayes {
             vector<float> pixel_unshaded_likelihood;
         };
 
+        int images_heights;
         int total_images;
         vector<class_> *classes = new vector<class_>();
-
-
-    public:
 
         NaiveModel();
 
         NaiveModel(string fileLocation, int image_height);
 
+        NaiveModel::NaiveModel(vector<string> images, int image_height);
+
         void CalculateProbabilities();
 
         void CalculateShading(string &image, class_ &character);
+
+        friend std::istream& operator >> (std::istream& is, NaiveModel& model);
+
+        friend std::ostream& operator << (std::ostream& os, NaiveModel& model);
+
 
     };
 

@@ -12,13 +12,11 @@ namespace naivebayes {
 NaiveModel::NaiveModel() {};
 
 NaiveModel::NaiveModel(string fileLocation, int image_height) {
-
+    images_heights = image_height;
     auto *parser = new Parser();
     vector<string> images = parser->getTrainingImages(fileLocation, image_height);
     total_images = images.size();
     size_t image_size = images.at(0).length();
-
-
     for (string current_image : images) {
 
         // Image representation
@@ -72,8 +70,67 @@ NaiveModel::NaiveModel(string fileLocation, int image_height) {
         CalculateShading(current_image, *current_class);
 
     }
-
 }
+
+    NaiveModel::NaiveModel(vector<string> images, int image_height) {
+        images_heights = image_height;
+        total_images = images.size();
+        size_t image_size = images.at(0).length();
+        for (string current_image : images) {
+
+            // Image representation
+            char current_class_name = current_image.at(0);
+
+            //2
+            //Determining if the this kind of image has been interpreted before and incrementing.
+            if (classes->empty()) {
+                auto *new_class = new class_();
+                new_class->class_name = current_class_name;
+                auto *shaded = new vector<int>(image_size - 1, 0);
+                auto *unshaded = new vector<int>(image_size - 1, 0);
+                auto *shaded_like = new vector<float>(image_size - 1, 0);
+                auto *unshaded_like = new vector<float>(image_size - 1, 0);
+                new_class->pixels_unshaded = *unshaded;
+                new_class->pixels_shaded = *shaded;
+                new_class->pixel_unshaded_likelihood = *unshaded_like;
+                new_class->pixel_shaded_likelihood = *shaded_like;
+                classes->push_back(*new_class);
+            }
+            bool class_DNE = true;
+            for (auto i = classes->begin(); i < classes->end(); i++) {
+                if (i->class_name == current_class_name) {
+                    class_DNE = false;
+                    i->training_occurrences++;
+                    break;
+                }
+            }
+            if (class_DNE) {
+                auto *new_class = new class_();
+                new_class->class_name = current_class_name;
+                new_class->training_occurrences++;
+                auto *shaded = new vector<int>(image_size - 1, 0);
+                auto *unshaded = new vector<int>(image_size - 1, 0);
+                auto *shaded_like = new vector<float>(image_size - 1, 0);
+                auto *unshaded_like = new vector<float>(image_size - 1, 0);
+                new_class->pixels_unshaded = *unshaded;
+                new_class->pixels_shaded = *shaded;
+                new_class->pixel_unshaded_likelihood = *unshaded_like;
+                new_class->pixel_shaded_likelihood = *shaded_like;
+                classes->push_back(*new_class);
+            }
+
+            class_ *current_class;
+            for (size_t i = 0; i < classes->size(); i++) {
+                if (current_class_name == classes->at(i).class_name) {
+                    current_class = &classes->at(i);
+                }
+            }
+
+            CalculateShading(current_image, *current_class);
+
+        }
+    }
+
 
 void NaiveModel::CalculateProbabilities() {
 
@@ -100,6 +157,38 @@ void NaiveModel::CalculateShading(string &image, class_ &character) {
             character.pixels_shaded.at(i - 1)++;
         }
     }
+}
+
+
+std::istream& operator >> (std::istream& is, NaiveModel& model) {
+    vector<string> image_lines;
+    string temp_string;
+    int image_height = 0;
+    string fixer = "                            ";
+    while (getline(is, temp_string)) {
+        if (image_height == 0) {
+            image_height = stoi(temp_string);
+            continue;
+        } else if (temp_string.length() == 0) {
+            temp_string = fixer;
+        }
+        image_lines.push_back(temp_string);
+        temp_string = "";
+    }
+
+    Parser *parser = new Parser();
+
+    NaiveModel *new_model = new NaiveModel(parser->getOverload(image_lines, image_height), image_height);
+    model.classes = new_model->classes;
+    model.images_heights = new_model->images_heights;
+    model.total_images = new_model->total_images;
+    return is;
+}
+
+std::ostream& operator << (std::ostream& os, NaiveModel& model) {
+    os << model.images_heights;
+    string json = "";
+    return os;
 }
 
 } // namespace naivebayes

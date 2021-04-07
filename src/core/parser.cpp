@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include "core/parser.h"
+#include "core/NaiveModel.h"
 
 namespace naivebayes {
 
@@ -40,5 +41,25 @@ namespace naivebayes {
 
         return images;
     }
+
+    vector<string> Parser::getOverload(vector<string> image_lines, int imageDimension) {
+        int line_num = 1;
+        size_t lines_size = image_lines.size();
+        string tmp_image = "";
+        vector<string> images;
+        for (size_t i = 0; i < lines_size; i++, line_num++) {
+            if (line_num < imageDimension) {
+                tmp_image = tmp_image + image_lines.at(i);
+            } else {
+                tmp_image = tmp_image + image_lines.at(i);
+                images.push_back(tmp_image);
+                tmp_image = "";
+                line_num = 0;
+            }
+        }
+
+        return images;
+    }
+
 
 } // namespace naivebayes

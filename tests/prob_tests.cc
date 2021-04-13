@@ -12,23 +12,23 @@ TEST_CASE("Probabilities") {
     Probabilities *calc = new Probabilities();
 
     SECTION("Prior probability") {
-        float my_prior = calc->calculatePrior(model->classes->at(0).training_occurrences, model->total_images);
+        float my_prior = calc->CalculatePrior(model->classes->at(0).training_occurrences, model->total_images);
         REQUIRE(my_prior == .25f);
     }
     SECTION("Check all likelihoods") {
-         REQUIRE(calc->calculateLikelihoodPixel
-         (model->classes->at(0).pixels_unshaded.at(0),
-         model->classes->at(0).training_occurrences)
+         REQUIRE(calc->CalculateLikelihoodPixel
+                 (model->classes->at(0).pixels_unshaded.at(0),
+                  model->classes->at(0).training_occurrences)
                                 == .5f
          );
-         REQUIRE(calc->calculateLikelihoodPixel
-         (model->classes->at(1).pixels_unshaded.at(0),
-         model->classes->at(0).training_occurrences)
+         REQUIRE(calc->CalculateLikelihoodPixel
+                 (model->classes->at(1).pixels_unshaded.at(0),
+                  model->classes->at(0).training_occurrences)
          == .5f
          );
-         REQUIRE(calc->calculateLikelihoodPixel
-         (model->classes->at(1).pixels_unshaded.at(1),
-          model->classes->at(0).training_occurrences)
+         REQUIRE(calc->CalculateLikelihoodPixel
+                 (model->classes->at(1).pixels_unshaded.at(1),
+                  model->classes->at(0).training_occurrences)
           == .33f
           );
     }

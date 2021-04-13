@@ -58,12 +58,13 @@ void NaiveModel::CalculateProbabilities() {
 
     Probabilities *calculator = new Probabilities();
     for (class_ &current_class : classes) {
-        current_class.prior = calculator->calculatePrior(current_class.training_occurrences, total_images);
+        current_class.prior = calculator->CalculatePrior(current_class.training_occurrences, total_images);
         for (size_t i = 0; i < current_class.pixels_shaded.size(); i++) {
-            current_class.pixel_shaded_likelihood.at(i) = calculator->calculateLikelihoodPixel(current_class.pixels_shaded.at(i), current_class.training_occurrences);
+            current_class.pixel_shaded_likelihood.at(i) = calculator->CalculateLikelihoodPixel(
+                    current_class.pixels_shaded.at(i), current_class.training_occurrences);
             current_class.pixel_unshaded_likelihood.at(i) =
                     calculator->
-                            calculateLikelihoodPixel(current_class.pixels_unshaded.at(i),
+                            CalculateLikelihoodPixel(current_class.pixels_unshaded.at(i),
                                                      current_class.training_occurrences
                     );
         }
@@ -83,6 +84,20 @@ void NaiveModel::CalculateShading(string &image, class_ &character) {
     }
 }
 
+char NaiveModel::GuessImage(const image& current_image) {
+    char image_guess = classes.at(0).class_name;
+    auto *calculator = new Probabilities();
+    float highest_prob = calculator->CalculateClassProbability(current_image.imageUnicode, classes.at(0));
+    for (const class_& current_class : classes) {
+        float current_prob = calculator->CalculateClassProbability(current_image.imageUnicode, current_class);
+        if (current_prob >= highest_prob) {
+            highest_prob = current_prob;
+            image_guess = current_class.class_name;
+        }
+    }
+    return image_guess;
+}
+
 std::ifstream& operator >> (std::ifstream& in, NaiveModel& model) {
     auto images = getTrainingImages(in, 29);
     auto new_model = NaiveModel(images);
@@ -96,6 +111,5 @@ std::ofstream& operator << (std::ofstream& out, NaiveModel& model) {
     out.close();
     return out;
 }
-
 
 } // namespace naivebayes

@@ -16,8 +16,6 @@ namespace naivebayes {
 
     vector<image> getTrainingImages(ifstream& file, int imageLength);
 
-    vector<string> getOverload(vector<string> image_lines, int imageDimension);
-
 } // namespace naivebayes
 
 #endif //NAIVE_BAYES_PARSER_H

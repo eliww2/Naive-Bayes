@@ -6,6 +6,7 @@
 #define NAIVE_BAYES_NAIVEMODEL_H
 
 #include <vector>
+#include <core/image.h>
 
 using namespace std;
 
@@ -41,6 +42,8 @@ public:
     void CalculateProbabilities();
 
     void CalculateShading(string &image, class_ &character);
+
+    char GuessImage(const image& current_image);
 
     friend std::ifstream& operator >> (std::ifstream& in, NaiveModel& model);
 

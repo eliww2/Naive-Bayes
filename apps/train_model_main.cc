@@ -11,10 +11,9 @@
 int main() {
 
   naivebayes::NaiveModel model;
-  ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\NaiveModel.txt)");
-  file.seekg(0);
-  file.read((char*)&model, sizeof(model));
-  file.close();
+  ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\trainingimagesandlabels.txt)");
+  file >> model;
+  cout << model.GuessImage(model.images.at(0));
   return 0;
 
 }

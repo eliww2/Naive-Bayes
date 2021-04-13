@@ -16,7 +16,11 @@ namespace naivebayes {
         ifstream file(fileLocation);
         vector<string> image_lines;
         string temp_string;
-        string fixer = "                            ";
+        string fixer = "";
+        for (int i = 0; i < imageDimension - 1; i ++) {
+            fixer = fixer + " ";
+        }
+
         while (getline(file, temp_string)) {
             if (temp_string.length() == 0) {
                 temp_string = fixer;
@@ -45,7 +49,10 @@ namespace naivebayes {
     vector<image> getTrainingImages(ifstream& file, int imageDimension) {
         vector<string> image_lines;
         string temp_string;
-        string fixer = "                            ";
+        string fixer = "";
+        for (int i = 0; i < imageDimension - 1; i ++) {
+            fixer = fixer + " ";
+        }
         while (getline(file, temp_string)) {
             if (temp_string.length() == 0) {
                 temp_string = fixer;
@@ -70,25 +77,5 @@ namespace naivebayes {
         }
         return images;
     }
-
-    vector<string> getOverload(vector<string> image_lines, int imageDimension) {
-        int line_num = 1;
-        size_t lines_size = image_lines.size();
-        string tmp_image = "";
-        vector<string> images;
-        for (size_t i = 0; i < lines_size; i++, line_num++) {
-            if (line_num < imageDimension) {
-                tmp_image = tmp_image + image_lines.at(i);
-            } else {
-                tmp_image = tmp_image + image_lines.at(i);
-                images.push_back(tmp_image);
-                tmp_image = "";
-                line_num = 0;
-            }
-        }
-
-        return images;
-    }
-
 
 } // namespace naivebayes

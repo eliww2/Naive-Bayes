@@ -4,12 +4,17 @@
 #include <core/parser.h>
 #include <core/image.h>
 #include <core/NaiveModel.h>
+#include <fstream>
 
 // TODO: You may want to change main's signature to take in argc and argv
 
 int main() {
-  vector<naivebayes::image> mine = naivebayes::getTrainingImages("C:\\Users\\eliww\\Downloads\\Cinder\\my_projects\\naive-bayes\\data\\trainingimagesandlabels.txt", 29);
-  auto bayes = new naivebayes::NaiveModel(mine);
-  bayes->SetModel();
+
+  naivebayes::NaiveModel model;
+  ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\NaiveModel.txt)");
+  file.seekg(0);
+  file.read((char*)&model, sizeof(model));
+  file.close();
   return 0;
+
 }

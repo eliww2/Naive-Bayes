@@ -11,12 +11,12 @@ using namespace std;
 
 namespace naivebayes {
 
-    class NaiveModel {
+class NaiveModel {
 
-    public:
+public:
 
-        //~~~~public for testing~~~~
-        struct class_ {
+    //~~~~public for testing~~~~
+    struct class_ {
             char class_name;
             int training_occurrences;
             float prior;
@@ -25,34 +25,28 @@ namespace naivebayes {
             vector<float> pixel_shaded_likelihood;
             vector<float> pixel_unshaded_likelihood;
         };
-        vector<class_> classes;
+    vector<class_> classes;
 
-        vector<image> images;
-        int images_heights;
-        int total_images;
-        //^~~~~public for testing~~~~^
+    vector<image> images;
+    int images_heights;
+    int total_images;
+    //^~~~~public for testing~~~~^
 
-        NaiveModel();
+    NaiveModel();
 
-        NaiveModel(vector<image> setImages);
+    NaiveModel(vector<image> setImages);
 
-        void SetModel();
+    void SetModel();
 
-        /*
-        NaiveModel(string fileLocation, int image_height);
+    void CalculateProbabilities();
 
-        NaiveModel::NaiveModel(vector<string> images, int image_height);*/
+    void CalculateShading(string &image, class_ &character);
 
-        void CalculateProbabilities();
+    friend std::ifstream& operator >> (std::ifstream& in, NaiveModel& model);
 
-        void CalculateShading(string &image, class_ &character);
+    friend std::ofstream& operator << (std::ofstream& out, NaiveModel& model);
 
-        friend std::istream& operator >> (std::istream& is, NaiveModel& model);
-
-        friend std::ostream& operator << (std::ostream& os, NaiveModel& model);
-
-
-    };
+};
 
 } // namespace naivebayes
 

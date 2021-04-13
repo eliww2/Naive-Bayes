@@ -4,9 +4,7 @@
 #include "core/image.h"
 
 naivebayes::image::image(const int height, const string unicode, const char setClass) {
-
     imageHeight = height;
     imageClass = setClass;
     imageUnicode = unicode;
-
 }

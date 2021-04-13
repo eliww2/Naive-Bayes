@@ -12,20 +12,12 @@ using namespace std;
 
 namespace naivebayes {
 
+    vector<image> getTrainingImages(const string& fileLocation, int imageLength);
 
-    /**
-     * Grabs a file and parses it taking the images and converting it to an array of the images.
-     * @param fileLocation Where the file is stored in memory.
-     * @param imageLength The height of the image including the label.
-     * @return vector containing the training images.
-     */
-   /* static vector<string> getTrainingImages(string fileLocation, int imageLength); */
-
-    vector<image> getTrainingImages(string fileLocation, int imageLength);
+    vector<image> getTrainingImages(ifstream& file, int imageLength);
 
     vector<string> getOverload(vector<string> image_lines, int imageDimension);
 
-
-
 } // namespace naivebayes
+
 #endif //NAIVE_BAYES_PARSER_H

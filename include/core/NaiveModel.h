@@ -15,7 +15,7 @@ namespace naivebayes {
 
     public:
 
-        //public for testing
+        //~~~~public for testing~~~~
         struct class_ {
             char class_name;
             int training_occurrences;
@@ -25,16 +25,23 @@ namespace naivebayes {
             vector<float> pixel_shaded_likelihood;
             vector<float> pixel_unshaded_likelihood;
         };
+        vector<class_> classes;
 
+        vector<image> images;
         int images_heights;
         int total_images;
-        vector<class_> *classes = new vector<class_>();
+        //^~~~~public for testing~~~~^
 
         NaiveModel();
 
+        NaiveModel(vector<image> setImages);
+
+        void SetModel();
+
+        /*
         NaiveModel(string fileLocation, int image_height);
 
-        NaiveModel::NaiveModel(vector<string> images, int image_height);
+        NaiveModel::NaiveModel(vector<string> images, int image_height);*/
 
         void CalculateProbabilities();
 

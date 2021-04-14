@@ -1,6 +1,8 @@
 #include <core/Probabilities.h>
 #include <core/image.h>
 
+using namespace std;
+
 namespace naivebayes {
 
     float Probabilities::CalculatePrior(int num_of_class, int total_images) const {
@@ -21,7 +23,7 @@ namespace naivebayes {
         size_t pixels_amount = image.length();
         float classProbability = log(current_class.prior);
         for (size_t i = 0; i < pixels_amount; i++) {
-            if (&image.at(i) == " ") {
+            if (isspace(image[i])) {
                 classProbability = classProbability + log(current_class.pixel_unshaded_likelihood.at(i));
             } else {
                 classProbability = classProbability + log(current_class.pixel_shaded_likelihood.at(i));

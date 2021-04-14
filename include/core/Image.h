@@ -7,21 +7,19 @@
 
 #include <string>
 
-using namespace std;
-
 namespace naivebayes {
 
-class image {
+class Image {
 
 public:
 
-    image(int height, string unicode, char imageClass);
+    Image(int height, const std::string& unicode, char imageClass);
 
-    int imageHeight;
+    int image_height_;
 
-    string imageUnicode;
+    std::string image_unicode_;
 
-    char imageClass;
+    char image_class_;
 
 };
 

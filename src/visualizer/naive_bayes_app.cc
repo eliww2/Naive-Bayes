@@ -9,7 +9,7 @@ NaiveBayesApp::NaiveBayesApp()
     : sketchpad_(glm::vec2(kMargin, kMargin), kImageDimension,
                  kWindowSize - 2 * kMargin) {
   ci::app::setWindowSize((int) kWindowSize, (int) kWindowSize);
-  ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\trainingimagesandlabels.txt)");
+  std::ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\trainingimagesandlabels.txt)");
   file >> model;
 }
 
@@ -50,8 +50,6 @@ void NaiveBayesApp::keyDown(ci::app::KeyEvent event) {
       break;
   }
 }
-
-
 
 }  // namespace visualizer
 

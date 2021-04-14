@@ -4,7 +4,7 @@
 #include <catch2/catch.hpp>
 
 #include <core/Probabilities.h>
-#include <core/parser.h>
+#include <core/Parser.h>
 #include <core/NaiveModel.h>
 #include <iostream>
 #include <fstream>

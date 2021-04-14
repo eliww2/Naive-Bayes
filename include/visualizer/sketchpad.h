@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/image.h>
+#include <core/Image.h>
 #include "cinder/gl/gl.h"
 
 namespace naivebayes {
@@ -10,7 +10,7 @@ namespace visualizer {
 /**
  * A sketchpad which will be displayed in the Cinder application and respond to
  * mouse events. Furthermore, the sketchpad can output its current state in the
- * same format as the Naive Bayes image data files.
+ * same format as the Naive Bayes Image data files.
  */
 class Sketchpad {
  public:
@@ -50,7 +50,7 @@ class Sketchpad {
    */
   void Clear();
 
-  image image_displayed_;
+  Image image_displayed_;
 
 private:
   glm::vec2 top_left_corner_;

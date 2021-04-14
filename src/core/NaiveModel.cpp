@@ -3,75 +3,74 @@
 //
 
 #include <fstream>
-#include <core/parser.h>
+#include <utility>
+#include <core/Parser.h>
 #include <core/Probabilities.h>
 #include "core/NaiveModel.h"
-#include <core/image.h>
+#include <core/Image.h>
 
 namespace naivebayes {
 
 NaiveModel::NaiveModel() {};
 
-NaiveModel::NaiveModel(vector<image> setImages) {
-    images = setImages;
+NaiveModel::NaiveModel(vector<Image> set_images) {
+    images = std::move(set_images);
     total_images = images.size();
-    images_heights = images.at(0).imageHeight;
+    images_heights = images.at(0).image_height_;
 }
 
 void NaiveModel::SetModel() {
-    for (image current_image : images) {
+    for (Image current_image : images) {
 
-        // Determines if this image is of a new or existing class, adding it if it's new
+        // Determines if this Image is of a new or existing class, adding it if it's new
         bool new_class = true;
         if (!(this->classes.empty())) {
-            for (class_ current_class : classes) {
-                if (current_class.class_name == current_image.imageClass) {
+            for (const ImageClass& current_class : classes) {
+                if (current_class.class_name == current_image.image_class_) {
                     new_class = false;
                     break;
                 }
             }
         }
         if (new_class) {
-            class_ current_class;
+            ImageClass current_class;
             current_class.training_occurrences = 0;
-            current_class.class_name = current_image.imageClass;
-            current_class.pixels_unshaded = vector<int>(current_image.imageUnicode.length(), 0);
-            current_class.pixels_shaded = vector<int>(current_image.imageUnicode.length(), 0);
-            current_class.pixel_shaded_likelihood = vector<float>(current_image.imageUnicode.length(), 0);
-            current_class.pixel_unshaded_likelihood = vector<float>(current_image.imageUnicode.length(), 0);
+            current_class.class_name = current_image.image_class_;
+            current_class.pixels_unshaded = vector<int>(current_image.image_unicode_.length(), 0);
+            current_class.pixels_shaded = vector<int>(current_image.image_unicode_.length(), 0);
+            current_class.pixel_shaded_likelihood = vector<float>(current_image.image_unicode_.length(), 0);
+            current_class.pixel_unshaded_likelihood = vector<float>(current_image.image_unicode_.length(), 0);
             classes.push_back(current_class);
         }
 
-        class_ *current_class;
-        for (size_t i = 0; i < classes.size(); i++) {
-            if (current_image.imageClass == classes.at(i).class_name) {
-                current_class = &classes.at(i);
+        ImageClass *current_class;
+        for (auto & this_class : classes) {
+            if (current_image.image_class_ == this_class.class_name) {
+                current_class = &this_class;
             }
         }
 
-        CalculateShading(current_image.imageUnicode, *current_class);
+        CalculateShading(current_image.image_unicode_, *current_class);
         this->CalculateProbabilities();
     }
 }
 
 void NaiveModel::CalculateProbabilities() {
 
-    Probabilities calculator;
-    for (class_ &current_class : classes) {
-        current_class.prior = calculator.CalculatePrior(current_class.training_occurrences, total_images);
+    for (ImageClass &current_class : classes) {
+        current_class.prior = CalculatePrior(current_class.training_occurrences, total_images, kLaplaceSmoothing);
         for (size_t i = 0; i < current_class.pixels_shaded.size(); i++) {
-            current_class.pixel_shaded_likelihood.at(i) = calculator.CalculateLikelihoodPixel(
-                    current_class.pixels_shaded.at(i), current_class.training_occurrences);
+            current_class.pixel_shaded_likelihood.at(i) = CalculateLikelihoodPixel(
+                    current_class.pixels_shaded.at(i), current_class.training_occurrences, kLaplaceSmoothing);
             current_class.pixel_unshaded_likelihood.at(i) =
-                    calculator.
-                            CalculateLikelihoodPixel(current_class.pixels_unshaded.at(i),
-                                                     current_class.training_occurrences
+                    CalculateLikelihoodPixel(current_class.pixels_unshaded.at(i),
+                                                     current_class.training_occurrences, kLaplaceSmoothing
                     );
         }
     }
 }
 
-void NaiveModel::CalculateShading(string &image, class_ &character) {
+void NaiveModel::CalculateShading(string &image, ImageClass &character) {
     character.training_occurrences++;
     for (size_t i = 1; i < character.pixels_unshaded.size(); i++) {
 
@@ -83,12 +82,11 @@ void NaiveModel::CalculateShading(string &image, class_ &character) {
     }
 }
 
-char NaiveModel::GuessImage(const image& current_image) {
+char NaiveModel::GuessImage(const Image& current_image) {
     char image_guess = classes.at(0).class_name;
-    Probabilities calculator;
-    float highest_prob = calculator.CalculateClassProbability(current_image.imageUnicode, classes.at(0));
-    for (const class_& current_class : classes) {
-        float current_prob = calculator.CalculateClassProbability(current_image.imageUnicode, current_class);
+    float highest_prob = CalculateClassProbability(current_image.image_unicode_, classes.at(0));
+    for (const ImageClass& current_class : classes) {
+        float current_prob = CalculateClassProbability(current_image.image_unicode_, current_class);
         if (current_prob >= highest_prob) {
             highest_prob = current_prob;
             image_guess = current_class.class_name;
@@ -98,7 +96,7 @@ char NaiveModel::GuessImage(const image& current_image) {
 }
 
 std::ifstream& operator >> (std::ifstream& in, NaiveModel& model) {
-    auto images = getTrainingImages(in, 29);
+    auto images = GetTrainingImages(in, 29);
     auto new_model = NaiveModel(images);
     model = new_model;
     model.SetModel();

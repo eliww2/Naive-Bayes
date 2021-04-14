@@ -14,7 +14,7 @@ Sketchpad::Sketchpad(const vec2& top_left_corner, size_t num_pixels_per_side,
       brush_radius_(brush_radius),
       image_displayed_(num_pixels_per_side + 1, "", '@'){
     for (size_t i = 0; i < num_pixels_per_side * num_pixels_per_side; i++) {
-        image_displayed_.imageUnicode = image_displayed_.imageUnicode + " ";
+        image_displayed_.image_unicode_ = image_displayed_.image_unicode_ + " ";
     }
 }
 
@@ -28,7 +28,7 @@ void Sketchpad::Draw() const {
       } else {
           string_position = (row * (num_pixels_per_side_ - 1)) + col + (row);
       }
-      if (!(isspace(image_displayed_.imageUnicode[string_position]))) {
+      if (!(isspace(image_displayed_.image_unicode_[string_position]))) {
       ci::gl::color(ci::Color::gray(0.3f));
       } else {
         ci::gl::color(ci::Color("white"));
@@ -65,16 +65,16 @@ void Sketchpad::HandleBrush(const vec2& brush_screen_coords) {
           } else {
               string_position = (row * (num_pixels_per_side_ - 1)) + col + (row);
           }
-          image_displayed_.imageUnicode.replace(string_position, 1, "!");
+          image_displayed_.image_unicode_.replace(string_position, 1, "!");
       }
     }
   }
 }
 
 void Sketchpad::Clear() {
-    image_displayed_.imageUnicode = "";
+    image_displayed_.image_unicode_ = "";
     for (size_t i = 0; i < num_pixels_per_side_ * num_pixels_per_side_; i++) {
-        image_displayed_.imageUnicode = image_displayed_.imageUnicode + " ";
+        image_displayed_.image_unicode_ = image_displayed_.image_unicode_ + " ";
     }
 }
 

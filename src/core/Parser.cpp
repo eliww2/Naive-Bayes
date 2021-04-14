@@ -6,19 +6,19 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <core/image.h>
-#include "core/parser.h"
+#include <core/Image.h>
+#include "core/Parser.h"
 #include "core/NaiveModel.h"
 
 namespace naivebayes {
 
-    vector<image> getTrainingImages(const string& fileLocation, int imageDimension) {
-        ifstream file(fileLocation);
+    vector<Image> GetTrainingImages(const string& file_location, int image_length) {
+        ifstream file(file_location);
         vector<string> image_lines;
         string temp_string;
-        string fixer = "";
-        for (int i = 0; i < imageDimension - 1; i ++) {
-            fixer = fixer + " ";
+        string fixer;
+        for (int i = 0; i < image_length - 1; i ++) {
+            fixer += " ";
         }
 
         while (getline(file, temp_string)) {
@@ -31,27 +31,27 @@ namespace naivebayes {
 
         int line_num = 1;
         size_t lines_size = image_lines.size();
-        string tmp_image = "";
-        vector<image> images;
+        temp_string = "";
+        vector<Image> images;
         for (size_t i = 0; i < lines_size; i++, line_num++) {
-            if (line_num < imageDimension) {
-                tmp_image = tmp_image + image_lines.at(i);
+            if (line_num < image_length) {
+                temp_string += image_lines.at(i);
             } else {
-                tmp_image = tmp_image + image_lines.at(i);
-                images.push_back(image(imageDimension, tmp_image.substr(1), tmp_image.at(0)));
-                tmp_image = "";
+                temp_string += image_lines.at(i);
+                images.emplace_back(image_length, temp_string.substr(1), temp_string.at(0));
+                temp_string = "";
                 line_num = 0;
             }
         }
         return images;
     }
 
-    vector<image> getTrainingImages(ifstream& file, int imageDimension) {
+    vector<Image> GetTrainingImages(ifstream& file, int image_length) {
         vector<string> image_lines;
         string temp_string;
-        string fixer = "";
-        for (int i = 0; i < imageDimension - 1; i ++) {
-            fixer = fixer + " ";
+        string fixer;
+        for (int i = 0; i < image_length - 1; i ++) {
+            fixer += " ";
         }
         while (getline(file, temp_string)) {
             if (temp_string.length() == 0) {
@@ -63,15 +63,15 @@ namespace naivebayes {
 
         int line_num = 1;
         size_t lines_size = image_lines.size();
-        string tmp_image = "";
-        vector<image> images;
+        temp_string = "";
+        vector<Image> images;
         for (size_t i = 0; i < lines_size; i++, line_num++) {
-            if (line_num < imageDimension) {
-                tmp_image = tmp_image + image_lines.at(i);
+            if (line_num < image_length) {
+                temp_string += image_lines.at(i);
             } else {
-                tmp_image = tmp_image + image_lines.at(i);
-                images.push_back(image(imageDimension, tmp_image.substr(1), tmp_image.at(0)));
-                tmp_image = "";
+                temp_string += image_lines.at(i);
+                images.emplace_back(image_length, temp_string.substr(1), temp_string.at(0));
+                temp_string = "";
                 line_num = 0;
             }
         }

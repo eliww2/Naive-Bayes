@@ -1,5 +1,6 @@
 #pragma once
 
+#include <core/image.h>
 #include "cinder/gl/gl.h"
 
 namespace naivebayes {
@@ -58,6 +59,8 @@ class Sketchpad {
   double pixel_side_length_;
 
   double brush_radius_;
+
+  image image_displayed_;
 };
 
 }  // namespace visualizer

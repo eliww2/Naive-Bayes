@@ -9,23 +9,28 @@
 // TODO: You may want to change main's signature to take in argc and argv
 using namespace naivebayes;
 
-int main() {
+int main(int argc, char* argv[]) {
 
+  // Loads in the file and creates the model
   NaiveModel model;
-  ifstream file(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\trainingimagesandlabels.txt)");
-  file >> model;
+  ifstream input(argv[1]);
+  input >> model;
 
-  auto mine = getTrainingImages(R"(C:\Users\eliww\Downloads\Cinder\my_projects\naive-bayes\data\testimagesandlabels.txt)", 29);
+  //Writes model to file
+  ofstream output(argv[2]);
+  output << model;
+
+  // Creates array of images and guesses their value, then prints success rate
+  auto mine = getTrainingImages(argv[3], 29);
   float correct = 0;
   float amount = 0;
-  for (image current_image : mine) {
+  for (const image& current_image : mine) {
       amount++;
       char ti = model.GuessImage(current_image);
       if (ti == current_image.imageClass) {
           correct++;
       }
   }
-  cout << correct / amount;
+  cout << "Success Rate: " << (100 * correct) / amount << "%";
   return 0;
-
 }

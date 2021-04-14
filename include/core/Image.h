@@ -9,11 +9,21 @@
 
 namespace naivebayes {
 
+
+/**
+ * Class that contains the size of an image, what it is representing, and the image itself.
+ */
 class Image {
 
 public:
 
-    Image(int height, const std::string& unicode, char imageClass);
+    /**
+     * Constructor. Sets each of the below variables.
+     * @param set_height sets height.
+     * @param set_unicode sets unicode.
+     * @param set_image_class sets class of the image.
+     */
+    Image(int set_height, const std::string& set_unicode, char set_image_class);
 
     int image_height_;
 

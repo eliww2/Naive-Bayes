@@ -3,8 +3,8 @@
 //
 #include "core/Image.h"
 
-naivebayes::Image::Image(const int height, const std::string& unicode, const char setClass) {
-    image_height_ = height;
-    image_class_ = setClass;
-    image_unicode_ = unicode;
+naivebayes::Image::Image(const int set_height, const std::string& set_unicode, const char set_image_class) {
+    image_height_ = set_height;
+    image_class_ = set_image_class;
+    image_unicode_ = set_unicode;
 }

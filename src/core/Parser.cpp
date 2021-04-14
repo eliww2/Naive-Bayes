@@ -20,7 +20,6 @@ namespace naivebayes {
         for (int i = 0; i < image_length - 1; i ++) {
             fixer += " ";
         }
-
         while (getline(file, temp_string)) {
             if (temp_string.length() == 0) {
                 temp_string = fixer;

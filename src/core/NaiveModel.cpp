@@ -43,6 +43,7 @@ void NaiveModel::SetModel() {
             classes.push_back(current_class);
         }
 
+        // Creates pointer to the class this image belongs to.
         ImageClass *current_class;
         for (auto & this_class : classes) {
             if (current_image.image_class_ == this_class.class_name) {
@@ -50,13 +51,13 @@ void NaiveModel::SetModel() {
             }
         }
 
+        // Uses the pointer to pass the class that needs to be updated.
         CalculateShading(current_image.image_unicode_, *current_class);
         this->CalculateProbabilities();
     }
 }
 
 void NaiveModel::CalculateProbabilities() {
-
     for (ImageClass &current_class : classes) {
         current_class.prior = CalculatePrior(current_class.training_occurrences, total_images, kLaplaceSmoothing);
         for (size_t i = 0; i < current_class.pixels_shaded.size(); i++) {
@@ -73,7 +74,6 @@ void NaiveModel::CalculateProbabilities() {
 void NaiveModel::CalculateShading(string &image, ImageClass &character) {
     character.training_occurrences++;
     for (size_t i = 1; i < character.pixels_unshaded.size(); i++) {
-
         if (image.at(i) == *" ") {
             character.pixels_unshaded.at(i - 1)++;
         } else {

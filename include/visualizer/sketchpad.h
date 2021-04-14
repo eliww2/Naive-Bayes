@@ -50,7 +50,9 @@ class Sketchpad {
    */
   void Clear();
 
- private:
+  image image_displayed_;
+
+private:
   glm::vec2 top_left_corner_;
 
   size_t num_pixels_per_side_;
@@ -60,7 +62,6 @@ class Sketchpad {
 
   double brush_radius_;
 
-  image image_displayed_;
 };
 
 }  // namespace visualizer

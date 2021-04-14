@@ -19,12 +19,15 @@ void NaiveBayesApp::draw() {
 
   sketchpad_.Draw();
 
+  string prediction = "Prediction: ";
+  prediction.push_back(current_prediction_);
+
   ci::gl::drawStringCentered(
       "Press Delete to clear the sketchpad. Press Enter to make a prediction.",
       glm::vec2(kWindowSize / 2, kMargin / 2), ci::Color("black"));
 
   ci::gl::drawStringCentered(
-      "Prediction: " + std::to_string(current_prediction_),
+      prediction,
       glm::vec2(kWindowSize / 2, kWindowSize - kMargin / 2), ci::Color("blue"));
 }
 
@@ -41,7 +44,7 @@ void NaiveBayesApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_RETURN:
       // ask your classifier to classify the image that's currently drawn on the
       // sketchpad and update current_prediction_
-
+      current_prediction_ = model.GuessImage(sketchpad_.image_displayed_);
       break;
 
     case ci::app::KeyEvent::KEY_DELETE:
@@ -49,6 +52,8 @@ void NaiveBayesApp::keyDown(ci::app::KeyEvent event) {
       break;
   }
 }
+
+
 
 }  // namespace visualizer
 

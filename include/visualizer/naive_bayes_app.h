@@ -29,7 +29,7 @@ class NaiveBayesApp : public ci::app::App {
 
  private:
   Sketchpad sketchpad_;
-  int current_prediction_ = -1;
+  char current_prediction_ = '@';
   NaiveModel model;
 };
 

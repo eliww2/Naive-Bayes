@@ -15,6 +15,12 @@ TEST_CASE("Naive testing") {
     NaiveModel model;
     std::ifstream file("data/testingImages.txt");
     file >> model;
+    
+    SECTION("Tests correct label guess is returned") {
+        REQUIRE(model.GuessImage(model.images.at(0)) == '1');
+        REQUIRE(model.GuessImage(model.images.at(5)) == '3');
+        REQUIRE(model.GuessImage(model.images.at(8)) == '5');
+    }
 
     SECTION("Images and labels are correctly loaded with operator overloading") {
         REQUIRE(model.classes.at(0).training_occurrences == 1);

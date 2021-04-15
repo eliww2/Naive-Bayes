@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
   output << model;
 
   // Creates array of training_images and guesses their value, then prints success rate
-  auto training_images = GetTrainingImages(argv[3], 29);
+  auto training_images = GetTrainingImages(argv[3]);
   float correct = 0;
   float amount = 0;
   for (const Image& current_image : training_images) {

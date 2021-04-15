@@ -15,8 +15,6 @@ namespace naivebayes {
 
 class NaiveModel {
 
-    // The default Laplace Smoothing constant.
-    static const int kLaplaceSmoothing = 1;
 
 public:
 
@@ -37,6 +35,9 @@ public:
     int images_heights;
     int total_images;
 
+
+    // The default Laplace Smoothing constant.
+    static const int kLaplaceSmoothing = 1;
     //^~~~~public for testing~~~~^
 
     /**

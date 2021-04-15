@@ -96,7 +96,7 @@ char NaiveModel::GuessImage(const Image& current_image) {
 }
 
 std::ifstream& operator >> (std::ifstream& in, NaiveModel& model) {
-    auto images = GetTrainingImages(in, 29);
+    auto images = GetTrainingImages(in);
     auto new_model = NaiveModel(images);
     model = new_model;
     model.SetModel();

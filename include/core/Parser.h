@@ -20,7 +20,7 @@ namespace naivebayes {
      * @param image_length height of image. Used for parsing.
      * @return vector of images for the model.
      */
-    vector<Image> GetTrainingImages(const string& file_location, int image_length);
+    vector<Image> GetTrainingImages(const string& file_location);
 
     /**
      * Takes file of images and parses it.
@@ -28,7 +28,7 @@ namespace naivebayes {
      * @param image_length height of image. Used for parsing.
      * @return vector of images for the model.
      */
-    vector<Image> GetTrainingImages(ifstream& file, int image_length);
+    vector<Image> GetTrainingImages(ifstream& file);
 
 } // namespace naivebayes
 
